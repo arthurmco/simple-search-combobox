@@ -4,8 +4,20 @@
 	<meta charset="UTF-8">
 	<title>Simple Combobox Test</title>
 	<style type="text/css">
+	article {
+		position: absolute;
+		top: 10%;
+		height: 90%;
+		width: 100%;
+	}
+
 	.search {
 		position: relative;
+		left: 30%;
+	}
+
+	.search-text {
+		height: 2em;
 	}
 
 	.search-area {
@@ -113,8 +125,6 @@
 		filterTimeout = setTimeout(function() {
 			var currv = $(node).find(".search-value").prop('value');
 
-			console.log(node)
-			console.log("search: "+str);
 			var optionbox = $(node).find(".search-area");
 			var data = $(optionbox).prop('data-items');
 			optionbox.empty();
