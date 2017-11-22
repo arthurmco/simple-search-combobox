@@ -80,8 +80,10 @@
 		$(node).find(".search-area").prop("selectedIndex", selidx);
 		selectItem(node, selidx, false);
 		ev.preventDefault();
-		if (ev.keyCode === 13) // If user press enter
+		if (ev.keyCode === 13) { // If user press enter 
 			hideOptions(node);
+			$(node).find('.search-text').blur();
+		}
 	}
 
 	/* Show the option list 
