@@ -21,8 +21,9 @@
 <article>
 	<div class="search">
 		<input type="text" class="search-text" 
-			onFocus="showOptions(this.parentNode, true)" 
-			onKeyup="filterOptions(this.parentNode, this.value)" >
+			onFocus="showOptions(this.parentNode, true)"
+   			onKeyDown="navigateList(this.parentNode, event)"
+			onKeyPress="filterOptions(this.parentNode, this.value)" >
 		<select name="" id="" class="search-area" size="12"
 			onFocus="showOptions(this.parentNode, false)" onBlur="hideOptions(this.parentNode)"
 			onChange="selectItem(this.parentNode, this.selectedIndex)" >
@@ -43,6 +44,34 @@
 		$(".search .search-area").prop('data-items', data);
 	});
 
+	/* Handle keyboard navigation for the list */
+	function navigateList(node, ev) {
+		console.log(ev.keyCode);
+		var selidx = $(node).find(".search-area").prop('selectedIndex');
+		var maxidx = $(node).find(".search-area").prop('length');
+
+		switch (ev.keyCode) {
+		case 38: //Key up
+			if (selidx > 0)
+				selidx--;			
+		break;
+		case 40: // Key down
+			if (selidx <= maxidx-1)
+				selidx++;
+		case 13:
+			break;
+		default:
+			return;
+		break;
+		}
+
+		$(node).find(".search-area").prop("selectedIndex", selidx);
+		selectItem(node, selidx, false);
+		ev.preventDefault();
+		if (ev.keyCode === 13) // If user press enter
+			hideOptions(node);
+	}
+
 	/* Show the option list 
 		filter: Filter the options alongside showing them
 	*/
@@ -59,11 +88,13 @@
 	}
 
 	/* Selects an item. */
-	function selectItem(node, idx) {
+	function selectItem(node, idx, hide=true) {
 		var data = $(node).find(".search-area").prop('data-items');
 		$(node).find(".search-text").prop('value', data[idx].name);
 		$(node).find(".search-value").prop('value', data[idx].value);
-		hideOptions(node);
+
+		if (hide)
+			hideOptions(node);
 	}
 
 	var filterTimeout = -1;
