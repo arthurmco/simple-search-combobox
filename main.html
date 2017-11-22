@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Simple Combobox Test</title>
+	<style type="text/css">
+	.search {
+		position: relative;
+	}
+
+	.search-area {
+		display: none;
+		position: absolute;
+		top: 100%;
+		z-index: 99;
+	}	
+	</style>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<article>
+	<div class="search">
+		<input type="text" class="search-text" 
+			onFocus="showOptions(this.parentNode)" onBlur="hideOptions(this.parentNode)"
+			onKeyup="filterOptions(this.parentNode, this.value)" >
+		<select name="" id="" class="search-area" size="12">
+		</select>
+	</div>
+
+	<div style="position: absolute; width: 50%; height: 50%; background-color: #990000">a</div>
+
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var data = [
+			{name: 'A data', value: 10},
+			{name: 'B data', value: 20},
+			{name: 'C data', value: 30},
+		];
+
+		$(".search .search-area").prop('data-items', data);
+	});
+
+	/* Show the option list */
+	function showOptions(node) {
+		var jnode = $(node).find(".search-area");
+		jnode.css('display', 'block');
+		jnode.css('width', $(node).find('.search-text').
+		  css('width'));
+		filterOptions(node, null);
+	}
+
+	var filterTimeout = -1;
+	/* Filter the option list based in a list of options (called 'data') in the
+	   'data-items' attribute of our list object
+	   Note that we need to have two attributes in each element: 
+	   	- name, that will be the name we'll show
+		- value, the value of the option in the option box
+
+	  If value is null or nothing, show everything
+	*/
+	function filterOptions(node, str) {
+		if (filterTimeout >= 0)
+			return;
+
+		filterTimeout = setTimeout(function() {
+
+			console.log(node)
+			console.log("search: "+str);
+			var optionbox = $(node).find(".search-area");
+			var data = $(optionbox).prop('data-items');
+			optionbox.empty();
+	
+			var addToList = function(name, v) {
+				var opt = $("<option></option>", {
+					value: v,
+				});
+				opt.text(name);
+				console.log(opt);
+				optionbox.append(opt);
+			};
+	
+			data.forEach(function(val, i) {
+				if (val.name.match(str))
+					addToList(val.name, val.value);
+				else if (str === null || str.trim() === "") 
+					addToList(val.name, val.value);
+			});
+	
+			filterTimeout = -1;
+		}, 1);
+	}
+	
+	/* Hide the option list */
+	function hideOptions(node) {
+		var jnode = $(node).find(".search-area");
+		jnode.css('display', 'none');
+	}
+	</script>
+</article>	
+</body>
+</html>
