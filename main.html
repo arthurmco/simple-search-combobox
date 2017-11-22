@@ -70,8 +70,12 @@
 		case 40: // Key down
 			if (selidx <= maxidx-1)
 				selidx++;
-		case 13:
+		case 13: // Enter
 			break;
+		case 27: // Esc
+			ev.preventDefault();
+			hideOptions(node);
+			$(node).find('.search-text').blur();
 		default:
 			return;
 		break;
@@ -91,7 +95,6 @@
 	*/
 	function showOptions(node, filter) {
 		var stxt = $(node).find('.search-text');
-		stxt.prop('value', '');
 
 		var jnode = $(node).find(".search-area");
 		jnode.css('display', 'block');
