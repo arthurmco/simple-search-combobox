@@ -21,10 +21,13 @@
 <article>
 	<div class="search">
 		<input type="text" class="search-text" 
-			onFocus="showOptions(this.parentNode)" onBlur="hideOptions(this.parentNode)"
+			onFocus="showOptions(this.parentNode, true)" 
 			onKeyup="filterOptions(this.parentNode, this.value)" >
-		<select name="" id="" class="search-area" size="12">
+		<select name="" id="" class="search-area" size="12"
+			onFocus="showOptions(this.parentNode, false)" onBlur="hideOptions(this.parentNode)"
+			onChange="selectItem(this.parentNode, this.selectedIndex)" >
 		</select>
+		<input type="hidden" class="search-value" />
 	</div>
 
 	<div style="position: absolute; width: 50%; height: 50%; background-color: #990000">a</div>
@@ -40,13 +43,25 @@
 		$(".search .search-area").prop('data-items', data);
 	});
 
-	/* Show the option list */
-	function showOptions(node) {
+	/* Show the option list 
+		filter: Filter the options alongside showing them
+	*/
+	function showOptions(node, filter) {
 		var jnode = $(node).find(".search-area");
 		jnode.css('display', 'block');
 		jnode.css('width', $(node).find('.search-text').
 		  css('width'));
-		filterOptions(node, null);
+
+		if (filter)
+			filterOptions(node, null);
+	}
+
+	/* Selects an item. */
+	function selectItem(node, idx) {
+		var data = $(node).find(".search-area").prop('data-items');
+		$(node).find(".search-text").prop('value', data[idx].name);
+		$(node).find(".search-value").prop('value', data[idx].value);
+		hideOptions(node);
 	}
 
 	var filterTimeout = -1;
@@ -71,9 +86,9 @@
 			optionbox.empty();
 	
 			var addToList = function(name, v) {
-				var opt = $("<option></option>", {
-					value: v,
-				});
+				var opt = $("<option></option>");
+				opt.prop('value', v);
+				
 				opt.text(name);
 				console.log(opt);
 				optionbox.append(opt);
