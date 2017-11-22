@@ -47,10 +47,12 @@
 		filter: Filter the options alongside showing them
 	*/
 	function showOptions(node, filter) {
+		var stxt = $(node).find('.search-text');
+		stxt.prop('value', '');
+
 		var jnode = $(node).find(".search-area");
 		jnode.css('display', 'block');
-		jnode.css('width', $(node).find('.search-text').
-		  css('width'));
+		jnode.css('width', stxt.css('width'));
 
 		if (filter)
 			filterOptions(node, null);
@@ -78,6 +80,7 @@
 			return;
 
 		filterTimeout = setTimeout(function() {
+			var currv = $(node).find(".search-value").prop('value');
 
 			console.log(node)
 			console.log("search: "+str);
@@ -85,9 +88,11 @@
 			var data = $(optionbox).prop('data-items');
 			optionbox.empty();
 	
-			var addToList = function(name, v) {
+			var addToList = function(name, v, currentv) {
 				var opt = $("<option></option>");
 				opt.prop('value', v);
+				if (currentv == v)
+					opt.prop('selected', 'selected');
 				
 				opt.text(name);
 				console.log(opt);
@@ -96,9 +101,9 @@
 	
 			data.forEach(function(val, i) {
 				if (val.name.match(str))
-					addToList(val.name, val.value);
+					addToList(val.name, val.value, currv);
 				else if (str === null || str.trim() === "") 
-					addToList(val.name, val.value);
+					addToList(val.name, val.value, currv);
 			});
 	
 			filterTimeout = -1;
