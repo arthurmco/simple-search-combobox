@@ -48,4 +48,4 @@ Copy that `search` class in your form, that three `search` CSS declarations and 
 
 ## License
 
-Licensed under the MIT license.
+Licensed under the Do What the F\*ck you want license (seriously)
