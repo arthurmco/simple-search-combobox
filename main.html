@@ -71,18 +71,24 @@
 			if (selidx <= maxidx-1)
 				selidx++;
 		case 13: // Enter
+			console.log(selidx);
 			break;
+
 		case 27: // Esc
 			ev.preventDefault();
 			hideOptions(node);
 			$(node).find('.search-text').blur();
 		default:
 			return;
+
 		break;
 		}
 
 		$(node).find(".search-area").prop("selectedIndex", selidx);
-		selectItem(node, selidx, false);
+		if (!selectItem(node, selidx, false)) {
+			$(node).find(".search-value").prop('value', '');
+		}
+
 		ev.preventDefault();
 		if (ev.keyCode === 13) { // If user press enter 
 			hideOptions(node);
@@ -104,14 +110,23 @@
 			filterOptions(node, null);
 	}
 
-	/* Selects an item. */
+	/* Selects an item.
+	 * Returns true if item was found, false if not
+	 */
 	function selectItem(node, idx, hide=true) {
+		var ret = false;
 		var data = $(node).find(".search-area").prop('data-items');
-		$(node).find(".search-text").prop('value', data[idx].name);
-		$(node).find(".search-value").prop('value', data[idx].value);
+
+		if (data && data[idx]) {
+			$(node).find(".search-text").prop('value', data[idx].name);
+			$(node).find(".search-value").prop('value', data[idx].value);
+			ret = true;
+		}
 
 		if (hide)
 			hideOptions(node);
+
+		return ret;
 	}
 
 	var filterTimeout = -1;
