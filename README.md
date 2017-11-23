@@ -44,7 +44,7 @@ and I don't want conflict.
 
 ## Installation
 
-Copy that `search` class in your form and include the `ssc.js` file.
+Copy that `search` class in your form, that three `search` CSS declarations and include the `ssc.js` file.
 
 ## License
 
