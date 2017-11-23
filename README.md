@@ -20,7 +20,7 @@ Consists of three elements inside of a `.search` block:
 ## Data receiving
 
 Since this list supports jQuery, it retrieves the list content as a name/value pair in the 
-`data-items` attribute in the `search-area` list, like:
+`data-items` property in the `search-area` list, like:
 
 ```javascript
 		
@@ -34,6 +34,8 @@ var data = [
 $(".search .search-area").prop('data-items', data);
 
 ```
+
+Since it's loaded via Javascript, you can load it dynamically too.
 
 ## Where's the CSS?
 
