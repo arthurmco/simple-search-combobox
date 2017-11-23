@@ -1,7 +1,9 @@
 /* Javascript functions for the simple search checkbox control */
 
+var ssc = {
+
 	/* Handle keyboard navigation for the list */
-	function navigateList(node, ev) {
+	navigateList: function(node, ev) {
 		console.log(ev.keyCode);
 		var selidx = $(node).find(".search-area").prop('selectedIndex');
 		var maxidx = $(node).find(".search-area").prop('length');
@@ -20,7 +22,7 @@
 
 		case 27: // Esc
 			ev.preventDefault();
-			hideOptions(node);
+			this.hideOptions(node);
 			$(node).find('.search-text').blur();
 		default:
 			return;
@@ -29,21 +31,21 @@
 		}
 
 		$(node).find(".search-area").prop("selectedIndex", selidx);
-		if (!selectItem(node, selidx, false)) {
+		if (!this.selectItem(node, selidx, false)) {
 			$(node).find(".search-value").prop('value', '');
 		}
 
 		ev.preventDefault();
 		if (ev.keyCode === 13) { // If user press enter 
-			hideOptions(node);
+			this.hideOptions(node);
 			$(node).find('.search-text').blur();
 		}
-	}
+	},
 
 	/* Show the option list 
 		filter: Filter the options alongside showing them
 	*/
-	function showOptions(node, filter) {
+	showOptions: function(node, filter) {
 		var stxt = $(node).find('.search-text');
 
 		var jnode = $(node).find(".search-area");
@@ -51,13 +53,13 @@
 		jnode.css('width', stxt.css('width'));
 
 		if (filter)
-			filterOptions(node, null);
-	}
+			this.filterOptions(node, null);
+	},
 
 	/* Selects an item.
 	 * Returns true if item was found, false if not
 	 */
-	function selectItem(node, idx, hide=true) {
+	selectItem: function(node, idx, hide=true) {
 		var ret = false;
 		var data = $(node).find(".search-area").prop('data-items');
 
@@ -68,12 +70,12 @@
 		}
 
 		if (hide)
-			hideOptions(node);
+			this.hideOptions(node);
 
 		return ret;
-	}
+	},
 
-	var filterTimeout = -1;
+	filterTimeout: -1,
 	/* Filter the option list based in a list of options (called 'data') in the
 	   'data-items' attribute of our list object
 	   Note that we need to have two attributes in each element: 
@@ -82,11 +84,11 @@
 
 	  If value is null or nothing, show everything
 	*/
-	function filterOptions(node, str) {
-		if (filterTimeout >= 0)
+	filterOptions: function(node, str) {
+		if (this.filterTimeout >= 0)
 			return;
 
-		filterTimeout = setTimeout(function() {
+		this.filterTimeout = setTimeout(function() {
 			var currv = $(node).find(".search-value").prop('value');
 
 			var optionbox = $(node).find(".search-area");
@@ -110,12 +112,14 @@
 					addToList(val.name, val.value, currv);
 			});
 	
-			filterTimeout = -1;
-		}, 1);
-	}
+			this.filterTimeout = -1;
+		}, 10);
+	},
 	
 	/* Hide the option list */
-	function hideOptions(node) {
+	hideOptions: function(node) {
 		var jnode = $(node).find(".search-area");
 		jnode.css('display', 'none');
 	}
+
+};

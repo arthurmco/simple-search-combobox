@@ -34,12 +34,13 @@
 <article>
 	<div class="search">
 		<input type="text" class="search-text" 
-			onFocus="showOptions(this.parentNode, true)"
-   			onKeyDown="navigateList(this.parentNode, event)"
-			onKeyPress="filterOptions(this.parentNode, this.value)" >
+			onFocus="ssc.showOptions(this.parentNode, true)"
+   			onKeyDown="ssc.navigateList(this.parentNode, event)"
+			onKeyPress="ssc.filterOptions(this.parentNode, this.value)" >
 		<select name="" id="" class="search-area" size="12"
-			onFocus="showOptions(this.parentNode, false)" onBlur="hideOptions(this.parentNode)"
-			onChange="selectItem(this.parentNode, this.selectedIndex)" >
+			onFocus="ssc.showOptions(this.parentNode, false)"
+   			onBlur="ssc.hideOptions(this.parentNode)"
+			onChange="ssc.selectItem(this.parentNode, this.selectedIndex)" >
 		</select>
 		<input type="hidden" class="search-value" />
 	</div>

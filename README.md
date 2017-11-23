@@ -23,7 +23,6 @@ Since this list supports jQuery, it retrieves the list content as a name/value p
 `data-items` attribute in the `search-area` list, like:
 
 ```javascript
-
 		
 var data = [
 	{name: 'A data', value: 10},
